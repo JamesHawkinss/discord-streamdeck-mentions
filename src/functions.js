@@ -28,10 +28,8 @@ async function getMentions(page) {
             mentions += parseInt(i.innerText);
         });
 
-        const nodes = Array.from(document.querySelectorAll('div[class*="pill"] > span'));
-        nodes.forEach((e) => {
-            if (e.style.height == '8px') hasUnreads = true;
-        })
+        Array.from(document.querySelectorAll('div[class*="pill"] > span'))
+            .forEach((e) => { if (e.style.height == '8px') hasUnreads = true })
 
         return {
             mentions,
@@ -40,4 +38,14 @@ async function getMentions(page) {
     });
 }
 
-module.exports = { login, getMentions }
+function setTitle(title, context, sd) {
+    sd.send({
+        event: 'setTitle',
+        context: context,
+        payload: {
+            title: title
+        }
+    })
+}
+
+module.exports = { login, getMentions, setTitle }

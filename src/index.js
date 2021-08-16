@@ -2,11 +2,11 @@ const puppeteer = require('puppeteer');
 const resize = require('resize-image-buffer');
 const StreamDeck = require('streamdeck-util');
 const fs = require('fs');
-
-const sd = new StreamDeck();
+const { login, getMentions, setTitle } = require('./functions');
 const config = require('./config');
 
-const { login, getMentions } = require('./functions');
+const sd = new StreamDeck();
+var context = null;
 
 (async () => {
     await new Promise((res) => {
@@ -17,12 +17,16 @@ const { login, getMentions } = require('./functions');
         });
 
         sd.on('open', res);
+        sd.on('error', (err) => console.error(err));
+        sd.on('message', (msg) => {
+            context = msg.context;
+        });
     })
 
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     page.setViewport({ width: 1920, height: 1080 })
-    
+
     await page.goto('https://discord.com/channels/@me');
 
     await login(page, async (b64) => {
@@ -36,14 +40,7 @@ const { login, getMentions } = require('./functions');
     });
 
     setInterval(async () => {
-        const m = await getMentions(page);
-
-        sd.send({
-            event: 'setTitle',
-            context: config.streamdeck.context,
-            payload: {
-                title: `${m.mentions} mentions\n${m.hasUnreads}`
-            }
-        })
+        const { mentions, hasUnreads } = await getMentions(page);
+        setTitle(`${mentions}\n${hasUnreads}`, context, sd);
     }, 1000)
 })();
