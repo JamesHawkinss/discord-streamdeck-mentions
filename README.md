@@ -2,6 +2,8 @@
 
 A Node.js app for displaying your Discord mentions and unreads on the Elgato Streamdeck.
 
+```❗ This is still a heavy work-in-progress, and may not work as intended. Please report any bugs through GitHub issues.```
+
 ## Installation
 1. `cd src` and `npm i`
 2. Copy folder `dev.squeezebox.discord-streamdeck-mentions` to `%appdata%/Elgato/Plugins`

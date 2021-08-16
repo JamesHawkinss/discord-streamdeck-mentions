@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "elgato-stream-deck": "^4.1.0",
     "puppeteer": "^10.2.0",
     "resize-image-buffer": "^1.0.0",
     "streamdeck-util": "^0.3.3"
