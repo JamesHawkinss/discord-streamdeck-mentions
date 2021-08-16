@@ -1,0 +1,1 @@
+discord-streamdeck-icon
